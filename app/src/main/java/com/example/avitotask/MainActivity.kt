@@ -19,6 +19,7 @@ class MainActivity : ComponentActivity() {
             AvitoTaskTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
                 ) {
                     RegistrationView()
                 }

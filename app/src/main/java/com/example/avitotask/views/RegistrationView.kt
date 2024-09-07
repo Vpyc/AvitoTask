@@ -5,27 +5,26 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.avitotask.ui.theme.Typography
+import com.example.avitotask.viewModels.RegistrationViewModel
 
 @Composable
 fun RegistrationView() {
 
-    val nameState = remember { mutableStateOf("") }
-    val emailState = remember { mutableStateOf("") }
-    val passwordState = remember { mutableStateOf("") }
-    val confirmPasswordState = remember { mutableStateOf("") }
+    val registerViewModel: RegistrationViewModel = viewModel()
 
     Column(
         modifier = Modifier
@@ -47,79 +46,36 @@ fun RegistrationView() {
             modifier = Modifier.fillMaxWidth(),
             verticalArrangement = Arrangement.spacedBy(25.dp)
         ) {
-            OutlinedTextField(
-                value = nameState.value,
-                onValueChange = { nameState.value = it },
-                shape = RoundedCornerShape(10.dp),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(48.dp),
-                placeholder = { Text("Имя") },
-                textStyle = Typography.bodyLarge,
-                colors = TextFieldDefaults.colors(
-                    focusedContainerColor = Color(0xFF262624),
-                    unfocusedContainerColor = Color(0xFF262624),
-
-                    focusedIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent,
-                ),
+            CustomOutlinedTextField(
+                value = registerViewModel.name.value,
+                onValueChange = registerViewModel::onNameChange,
+                placeholder = "Имя"
             )
-            OutlinedTextField(
-                value = emailState.value,
-                onValueChange = { emailState.value = it },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(48.dp),
-                textStyle = Typography.bodyLarge,
-                shape = RoundedCornerShape(10.dp),
-                placeholder = { Text("Электронная почта") },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-                colors = TextFieldDefaults.colors(
-                    focusedContainerColor = Color(0xFF262624),
-                    unfocusedContainerColor = Color(0xFF262624),
-
-                    focusedIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent,
-                ),
+            CustomOutlinedTextField(
+                value = registerViewModel.email.value,
+                onValueChange = registerViewModel::onEmailChange,
+                placeholder = "Электронная почта",
+                keyboardType = KeyboardType.Email,
+                isError = registerViewModel.emailError.value,
             )
-            OutlinedTextField(
-                value = passwordState.value,
-                onValueChange = { passwordState.value = it },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(48.dp),
-                textStyle = Typography.bodyLarge,
-                shape = RoundedCornerShape(10.dp),
-                placeholder = { Text("Пароль") },
-                visualTransformation = PasswordVisualTransformation(),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                colors = TextFieldDefaults.colors(
-                    focusedContainerColor = Color(0xFF262624),
-                    unfocusedContainerColor = Color(0xFF262624),
-
-                    focusedIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent,
-                ),
+            CustomOutlinedTextField(
+                value = registerViewModel.password.value,
+                onValueChange = registerViewModel::onPasswordChange,
+                placeholder = "Пароль",
+                isPassword = true,
+                keyboardType = KeyboardType.Password,
+                isError = registerViewModel.passwordError.value,
             )
-            OutlinedTextField(
-                value = confirmPasswordState.value,
-                onValueChange = { confirmPasswordState.value = it },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(48.dp),
-                textStyle = Typography.bodyLarge,
-                shape = RoundedCornerShape(10.dp),
-                placeholder = { Text("Подтвердите пароль") },
-                visualTransformation = PasswordVisualTransformation(),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                colors = TextFieldDefaults.colors(
-                    focusedContainerColor = Color(0xFF262624),
-                    unfocusedContainerColor = Color(0xFF262624),
-
-                    focusedIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent,
-                ),
+            CustomOutlinedTextField(
+                value = registerViewModel.confirmPassword.value,
+                onValueChange = registerViewModel::onConfirmPasswordChange,
+                placeholder = "Подтвердите пароль",
+                isPassword = true,
+                keyboardType = KeyboardType.Password,
+                isError = registerViewModel.confirmPasswordError.value,
             )
+            if (registerViewModel.confirmPasswordError.value) {
+                Text("Пароли не совпадают", color = MaterialTheme.colorScheme.error)}
         }
 
         Button(
@@ -134,6 +90,37 @@ fun RegistrationView() {
                 style = Typography.labelMedium)
         }
     }
+}
+
+@Composable
+fun CustomOutlinedTextField(
+    modifier: Modifier = Modifier,
+    value: String,
+    onValueChange: (String) -> Unit,
+    placeholder: String,
+    isPassword: Boolean = false,
+    keyboardType: KeyboardType = KeyboardType.Text,
+    isError: Boolean = false,
+) {
+    OutlinedTextField(
+        value = value,
+        onValueChange = onValueChange,
+        shape = RoundedCornerShape(10.dp),
+        modifier = modifier
+            .fillMaxWidth()
+            .height(48.dp),
+        placeholder = { Text(placeholder) },
+        textStyle = Typography.bodyLarge,
+        visualTransformation = if (isPassword) PasswordVisualTransformation() else VisualTransformation.None,
+        keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
+        colors = TextFieldDefaults.colors(
+            focusedContainerColor = Color(0xFF262624),
+            unfocusedContainerColor = Color(0xFF262624),
+            focusedIndicatorColor = Color.Transparent,
+            unfocusedIndicatorColor = Color.Transparent,
+        ),
+        isError = isError
+    )
 }
 
 @Preview(showBackground = true)

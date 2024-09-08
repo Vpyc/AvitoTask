@@ -88,7 +88,7 @@ fun RegistrationView() {
             onClick = { registerClick(registerViewModel, context) },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 20.dp),
+                .padding(top = 80.dp, bottom = 30.dp),
             shape = RoundedCornerShape(10.dp),
 
         ) {

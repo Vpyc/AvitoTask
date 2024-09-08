@@ -1,5 +1,7 @@
 package com.example.avitotask.views
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -12,19 +14,23 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.avitotask.ui.theme.InputColor
 import com.example.avitotask.ui.theme.Typography
 import com.example.avitotask.viewModels.RegistrationViewModel
+import com.example.avitotask.viewModels.RegistrationViewModelFactory
 
 @Composable
 fun RegistrationView() {
 
-    val registerViewModel: RegistrationViewModel = viewModel()
+    val registerViewModel: RegistrationViewModel = viewModel(factory = RegistrationViewModelFactory())
+    val context = LocalContext.current
 
     Column(
         modifier = Modifier
@@ -79,16 +85,33 @@ fun RegistrationView() {
         }
 
         Button(
-            onClick = { },
+            onClick = { registerClick(registerViewModel, context) },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 150.dp, bottom = 50.dp),
+                .padding(top = 20.dp),
             shape = RoundedCornerShape(10.dp),
 
         ) {
             Text("Войти",
                 style = Typography.labelMedium)
         }
+    }
+}
+
+fun registerClick(rvm : RegistrationViewModel, context: Context) {
+    if (rvm.emailError.value || rvm.passwordError.value || rvm.confirmPasswordError.value) {
+        Toast.makeText(context, "Введите корректные данные", Toast.LENGTH_SHORT).show()
+        return
+    }
+    else {
+        rvm.register(
+                onSuccess = {
+                    Toast.makeText(context,"Пабеда", Toast.LENGTH_SHORT).show()
+                },
+                onError = { message ->
+                    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+                }
+            )
     }
 }
 
@@ -114,8 +137,8 @@ fun CustomOutlinedTextField(
         visualTransformation = if (isPassword) PasswordVisualTransformation() else VisualTransformation.None,
         keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
         colors = TextFieldDefaults.colors(
-            focusedContainerColor = Color(0xFF262624),
-            unfocusedContainerColor = Color(0xFF262624),
+            focusedContainerColor = InputColor,
+            unfocusedContainerColor = InputColor,
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent,
         ),

@@ -24,7 +24,7 @@ open class ValidationViewModel: ViewModel() {
 
     open fun onPasswordChange(value: String) {
         _password.value = value
-        _passwordError.value = value.length > 24
+        _passwordError.value = value.length > 24 || value.length < 8
     }
 
     private fun isValidEmail(email: String): Boolean {

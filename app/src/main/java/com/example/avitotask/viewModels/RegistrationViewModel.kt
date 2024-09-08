@@ -2,8 +2,12 @@ package com.example.avitotask.viewModels
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.viewModelScope
+import com.example.avitotask.repository.UserRepository
+import com.example.avitotask.retrofit.RegistrationRequest
+import kotlinx.coroutines.launch
 
-class RegistrationViewModel : ValidationViewModel() {
+class RegistrationViewModel(private val userRepository: UserRepository) : ValidationViewModel() {
     private val _name = mutableStateOf("")
     val name: MutableState<String> = _name
 
@@ -19,12 +23,29 @@ class RegistrationViewModel : ValidationViewModel() {
 
     override fun onPasswordChange(value: String) {
         _password.value = value
-        _passwordError.value = value.length > 24
+        _passwordError.value = value.length > 24 || value.length < 8
         _confirmPasswordError.value = _confirmPassword.value != value
     }
 
     fun onConfirmPasswordChange(value: String) {
         _confirmPassword.value = value
         _confirmPasswordError.value = _password.value != value
+    }
+    fun register(onSuccess: () -> Unit, onError: (String) -> Unit) {
+        viewModelScope.launch {
+            val request = RegistrationRequest(
+                name = name.value,
+                email = email.value,
+                password = password.value,
+                cpassword = confirmPassword.value
+            )
+
+            val result = userRepository.registerUser(request)
+            if (result.isSuccess) {
+                onSuccess()
+            } else {
+                onError(result.exceptionOrNull()?.message ?: "Неизвестная ошибка")
+            }
+        }
     }
 }

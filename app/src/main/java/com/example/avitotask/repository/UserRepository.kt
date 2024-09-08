@@ -15,7 +15,8 @@ class UserRepository {
             if (response.isSuccessful) {
                 Result.success(Unit)
             } else {
-                val errorResponse = gson.fromJson(response.errorBody()?.string(), ErrorResponse::class.java)
+                val errorResponse =
+                    gson.fromJson(response.errorBody()?.string(), ErrorResponse::class.java)
                 Result.failure(Exception("Ошибка при регистрации: ${errorResponse.message}"))
             }
         } catch (e: Exception) {
@@ -29,7 +30,8 @@ class UserRepository {
             if (response.isSuccessful) {
                 Result.success(response.body()?.token ?: "")
             } else {
-                val errorResponse = gson.fromJson(response.errorBody()?.string(), ErrorResponse::class.java)
+                val errorResponse =
+                    gson.fromJson(response.errorBody()?.string(), ErrorResponse::class.java)
                 Result.failure(Exception("Ошибка при входе: ${errorResponse.message}"))
             }
         } catch (e: Exception) {
@@ -38,5 +40,19 @@ class UserRepository {
         }
     }
 
-    su
+    suspend fun getProfile(token: String): Result<Unit> {
+        return try {
+            val response = RetrofitClient.usersApi.getProfile("Bearer $token")
+            if (response.isSuccessful) {
+                Result.success(Unit)
+            } else {
+                val errorResponse =
+                    gson.fromJson(response.errorBody()?.string(), ErrorResponse::class.java)
+                Result.failure(Exception("Ошибка при получении профиля: ${errorResponse.message}"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+
+        }
+    }
 }

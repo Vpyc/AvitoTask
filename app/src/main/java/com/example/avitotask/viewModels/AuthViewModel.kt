@@ -1,14 +1,18 @@
 package com.example.avitotask.viewModels
 
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
 import com.example.avitotask.repository.UserRepository
 import com.example.avitotask.retrofit.LoginRequest
-import com.example.avitotask.retrofit.RegistrationRequest
+import com.example.avitotask.shared.TokenManager
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class AuthViewModel(private val userRepository: UserRepository) : ValidationViewModel() {
+@HiltViewModel
+class AuthViewModel @Inject constructor(
+    private val userRepository: UserRepository,
+    private val tokenManager: TokenManager
+) : ValidationViewModel() {
 
     var token: String?  = null
     fun login(onSuccess: () -> Unit, onError: (String) -> Unit) {

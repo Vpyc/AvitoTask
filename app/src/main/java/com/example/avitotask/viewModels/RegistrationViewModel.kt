@@ -5,9 +5,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
 import com.example.avitotask.repository.UserRepository
 import com.example.avitotask.retrofit.RegistrationRequest
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class RegistrationViewModel(private val userRepository: UserRepository) : ValidationViewModel() {
+@HiltViewModel
+class RegistrationViewModel @Inject constructor(
+    private val userRepository: UserRepository
+) : ValidationViewModel() {
     private val _name = mutableStateOf("")
     val name: MutableState<String> = _name
 

@@ -19,15 +19,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.avitotask.ui.theme.Typography
 import com.example.avitotask.viewModels.AuthViewModel
-import com.example.avitotask.viewModels.CommonViewModelFactory
 
 @Composable
 fun AuthView(navContoller: NavController) {
-    val authViewModel: AuthViewModel = viewModel(factory = CommonViewModelFactory())
+
+    val authViewModel: AuthViewModel = hiltViewModel()
     val context = LocalContext.current
 
     Box(

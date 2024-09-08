@@ -12,7 +12,7 @@ fun Main() {
     val navController = rememberNavController()
     NavHost(
         navController = navController,
-        startDestination = NavRoutes.Auth.route
+        startDestination = NavRoutes.Register.route
     ) {
         composable(NavRoutes.Register.route) {
             RegistrationView(navController)

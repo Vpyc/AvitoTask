@@ -1,12 +1,13 @@
 package com.example.avitotask.views
 
-import android.content.Context
-import android.widget.Toast
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -15,14 +16,12 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.example.avitotask.navigation.NavRoutes
 import com.example.avitotask.ui.theme.Typography
 import com.example.avitotask.viewModels.RegistrationViewModel
 import com.example.avitotask.viewModels.RegistrationViewModelFactory
 
 @Composable
-fun RegistrationView(navContoller: NavController) {
-
+fun AuthView(navContoller: NavController) {
     val registerViewModel: RegistrationViewModel = viewModel(factory = RegistrationViewModelFactory())
     val context = LocalContext.current
 
@@ -30,31 +29,27 @@ fun RegistrationView(navContoller: NavController) {
         modifier = Modifier
             .fillMaxSize()
             .padding(30.dp),
-        verticalArrangement = Arrangement.SpaceBetween
+        verticalArrangement = Arrangement.Top
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 25.dp),
             horizontalArrangement = Arrangement.Start
         ) {
             Text(
-                text = "Регистрация",
+                text = "Вход",
                 style = Typography.titleLarge
             )
         }
-
         Column(
             modifier = Modifier.fillMaxWidth(),
-            verticalArrangement = Arrangement.spacedBy(25.dp)
+            verticalArrangement = Arrangement.spacedBy(15.dp)
         ) {
-            CustomOutlinedTextField(
-                value = registerViewModel.name.value,
-                onValueChange = registerViewModel::onNameChange,
-                placeholder = "Имя"
-            )
             CustomOutlinedTextField(
                 value = registerViewModel.email.value,
                 onValueChange = registerViewModel::onEmailChange,
-                placeholder = "Электронная почта",
+                placeholder = "Телефон и почта",
                 keyboardType = KeyboardType.Email,
                 isError = registerViewModel.emailError.value,
             )
@@ -66,46 +61,19 @@ fun RegistrationView(navContoller: NavController) {
                 keyboardType = KeyboardType.Password,
                 isError = registerViewModel.passwordError.value,
             )
-            CustomOutlinedTextField(
-                value = registerViewModel.confirmPassword.value,
-                onValueChange = registerViewModel::onConfirmPasswordChange,
-                placeholder = "Подтвердите пароль",
-                isPassword = true,
-                keyboardType = KeyboardType.Password,
-                isError = registerViewModel.confirmPasswordError.value,
-            )
-            if (registerViewModel.confirmPasswordError.value) {
-                Text("Пароли не совпадают", color = MaterialTheme.colorScheme.error)}
         }
 
         Button(
-            onClick = { registerClick(registerViewModel, context, navContoller) },
+            onClick = { },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 80.dp, bottom = 30.dp),
             shape = RoundedCornerShape(10.dp),
 
-        ) {
+            ) {
             Text("Войти",
                 style = Typography.labelMedium)
         }
     }
-}
 
-fun registerClick(rvm : RegistrationViewModel, context: Context, navContoller: NavController) {
-    if (rvm.emailError.value || rvm.passwordError.value || rvm.confirmPasswordError.value) {
-        Toast.makeText(context, "Введите корректные данные", Toast.LENGTH_SHORT).show()
-        return
-    }
-    else {
-        rvm.register(
-                onSuccess = {
-                    navContoller.navigate(NavRoutes.Auth.route)
-                },
-                onError = { message ->
-                    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
-                }
-            )
-    }
 }
-

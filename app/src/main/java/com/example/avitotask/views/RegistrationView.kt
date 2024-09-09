@@ -4,8 +4,6 @@ import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -85,19 +83,12 @@ fun RegistrationView(navContoller: NavController) {
                 }
             }
         }
-        Button(
+        InButton(
             onClick = { registerClick(registerViewModel, context, navContoller) },
             modifier = Modifier
-                .fillMaxWidth()
                 .align(Alignment.BottomCenter),
-            shape = RoundedCornerShape(10.dp),
-
-            ) {
-            Text(
-                "Войти",
-                style = Typography.labelMedium
+            text = "Войти"
             )
-        }
     }
 }
 
@@ -117,4 +108,3 @@ fun registerClick(rvm : RegistrationViewModel, context: Context, navContoller: N
             )
     }
 }
-

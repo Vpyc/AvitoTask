@@ -14,6 +14,6 @@ interface UsersApi {
     @POST("users/auth/login")
     suspend fun loginUser(@Body authRequest: LoginRequest): Response<LoginResponse>
 
-    @GET("users/auth/profile")
+    @GET("users/auth/login")
     suspend fun getProfile(@Header("Authorization") token: String): Response<Unit>
 }

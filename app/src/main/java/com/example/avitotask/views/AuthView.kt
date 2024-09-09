@@ -10,10 +10,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -21,15 +21,50 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.avitotask.navigation.NavRoutes
 import com.example.avitotask.ui.theme.Typography
 import com.example.avitotask.viewModels.AuthViewModel
 
 @Composable
-fun AuthView(navContoller: NavController) {
+fun AuthView(navController: NavController) {
 
     val authViewModel: AuthViewModel = hiltViewModel()
     val context = LocalContext.current
 
+    LaunchedEffect(Unit) {
+        authViewModel.validateToken { success ->
+            if (success) {
+                /*navController.navigate(NavRoutes.Home.route) {
+                    popUpTo(NavRoutes.Auth.route) { inclusive = true }
+                }*/
+            }
+        }
+    }
+
+    if (authViewModel.isLoading.value){
+        IsLoading()
+    }
+    else{
+        Content(authViewModel, context)
+    }
+}
+
+@Composable
+fun IsLoading() {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+    ){
+        CircularProgressIndicator(
+            modifier = Modifier
+                .align(Alignment.Center)
+        )
+    }
+}
+
+
+@Composable
+fun Content(authViewModel: AuthViewModel, context: Context) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -74,25 +109,19 @@ fun AuthView(navContoller: NavController) {
             }
         }
 
-        Button(
+        InButton(
             onClick = { loginClick(authViewModel, context) },
             modifier = Modifier
-                .fillMaxWidth()
                 .align(Alignment.BottomCenter),
-            shape = RoundedCornerShape(10.dp)
-        ) {
-            Text(
-                "Войти",
-                style = Typography.labelMedium
-            )
-        }
+            text = "Вход"
+        )
     }
 }
 
 fun loginClick(avm : AuthViewModel, context: Context) {
     avm.login(
         onSuccess = {
-            Toast.makeText(context, avm.token.toString(), Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "КРута", Toast.LENGTH_SHORT).show()
         },
         onError = { message ->
             Toast.makeText(context, message, Toast.LENGTH_SHORT).show()

@@ -16,6 +16,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.example.avitotask.ui.theme.InputColor
 import com.example.avitotask.ui.theme.Typography
+import androidx.compose.material3.Button
 
 @Composable
 fun CustomOutlinedTextField(
@@ -46,4 +47,22 @@ fun CustomOutlinedTextField(
         ),
         isError = isError
     )
+}
+
+@Composable
+fun InButton(
+    modifier: Modifier = Modifier,
+    text: String,
+    onClick: () -> Unit,
+) {
+    Button(
+        onClick = onClick,
+        modifier = modifier
+            .fillMaxWidth(),
+        shape = RoundedCornerShape(10.dp),
+    ) {
+        Text(
+            text,
+            style = Typography.labelMedium)
+    }
 }

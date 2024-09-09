@@ -11,7 +11,7 @@ class TokenManager(context: Context) {
         private const val TOKEN_KEY = "auth_token"
     }
 
-    fun saveToken(token: String) {
+    fun saveToken(token: String?) {
         sharedPreferences.edit().putString(TOKEN_KEY, token).apply()
     }
 

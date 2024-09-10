@@ -1,8 +1,10 @@
 package com.example.avitotask.di
 
 import android.content.Context
+import com.example.avitotask.repository.ProductRepository
 import com.example.avitotask.repository.UserRepository
 import com.example.avitotask.shared.TokenManager
+import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,8 +18,14 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideUserRepository(): UserRepository {
-        return UserRepository()
+    fun provideUserRepository(gson: Gson): UserRepository {
+        return UserRepository(gson)
+    }
+
+    @Provides
+    @Singleton
+    fun provideProductRepository(gson: Gson): ProductRepository {
+        return ProductRepository(gson)
     }
 
     @Provides

@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -34,9 +33,9 @@ fun AuthView(navController: NavController) {
     LaunchedEffect(Unit) {
         authViewModel.validateToken { success ->
             if (success) {
-                /*navController.navigate(NavRoutes.Home.route) {
+                navController.navigate(NavRoutes.Home.route) {
                     popUpTo(NavRoutes.Auth.route) { inclusive = true }
-                }*/
+                }
             }
         }
     }
@@ -45,26 +44,12 @@ fun AuthView(navController: NavController) {
         IsLoading()
     }
     else{
-        Content(authViewModel, context)
+        AuthContent(authViewModel, context, navController)
     }
 }
 
 @Composable
-fun IsLoading() {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-    ){
-        CircularProgressIndicator(
-            modifier = Modifier
-                .align(Alignment.Center)
-        )
-    }
-}
-
-
-@Composable
-fun Content(authViewModel: AuthViewModel, context: Context) {
+fun AuthContent(authViewModel: AuthViewModel, context: Context, navController: NavController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -110,7 +95,7 @@ fun Content(authViewModel: AuthViewModel, context: Context) {
         }
 
         InButton(
-            onClick = { loginClick(authViewModel, context) },
+            onClick = { loginClick(authViewModel, context, navController) },
             modifier = Modifier
                 .align(Alignment.BottomCenter),
             text = "Вход"
@@ -118,10 +103,12 @@ fun Content(authViewModel: AuthViewModel, context: Context) {
     }
 }
 
-fun loginClick(avm : AuthViewModel, context: Context) {
+fun loginClick(avm : AuthViewModel, context: Context, navController: NavController) {
     avm.login(
         onSuccess = {
-            Toast.makeText(context, "КРута", Toast.LENGTH_SHORT).show()
+            navController.navigate(NavRoutes.Home.route) {
+                popUpTo(NavRoutes.Auth.route) { inclusive = true }
+            }
         },
         onError = { message ->
             Toast.makeText(context, message, Toast.LENGTH_SHORT).show()

@@ -6,9 +6,10 @@ import com.example.avitotask.retrofit.RegistrationRequest
 import com.example.avitotask.retrofit.RetrofitClient
 import com.google.gson.Gson
 
-class UserRepository {
+class UserRepository (
+    private val gson: Gson
+) {
 
-    private val gson = Gson()
     suspend fun registerUser(registrationRequest: RegistrationRequest): Result<Unit> {
         return try {
             val response = RetrofitClient.usersApi.registerUser(registrationRequest)

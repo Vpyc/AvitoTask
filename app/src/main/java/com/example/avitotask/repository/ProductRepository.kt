@@ -10,7 +10,8 @@ class ProductRepository (private val gson: Gson){
         return try {
             val response = RetrofitClient.productsApi.getProducts()
             if (response.isSuccessful) {
-                Result.success(response.body() ?: emptyList())
+                val apiResponse = response.body()
+                Result.success(apiResponse?.Data ?: emptyList())
             } else {
                 Result.failure(Exception("Ошибка при получении продуктов: ${response.message()}"))
             }

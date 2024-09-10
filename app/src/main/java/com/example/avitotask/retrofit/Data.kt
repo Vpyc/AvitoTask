@@ -23,9 +23,16 @@ data class LoginResponse(
 )
 
 data class Product(
-    val id: String,
+    val _id: String,
     val name: String,
     val price: Int,
     val discounted_price: Int?,
-    val images: List<String>
+    val images: List<String>,
+    val description: String
+)
+
+data class ProductResponse(
+    val status: String,
+    val count: Int,
+    val Data: List<Product>
 )

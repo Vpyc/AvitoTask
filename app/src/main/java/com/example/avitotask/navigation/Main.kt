@@ -37,7 +37,11 @@ fun Main() {
             AuthView(navController)
         }
         composable(NavRoutes.Home.route) {
-            HomeView()
+            HomeView(
+                onProductClick = { productId ->
+                    navController.navigate(NavRoutes.ProductDetail.createRoute(productId))
+                }
+            )
         }
     }
 }

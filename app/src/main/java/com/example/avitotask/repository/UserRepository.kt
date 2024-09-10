@@ -53,7 +53,6 @@ class UserRepository (
             }
         } catch (e: Exception) {
             Result.failure(e)
-
         }
     }
 }

@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.avitotask.repository.ProductRepository
-import com.example.avitotask.retrofit.Product
+import com.example.avitotask.retrofit.ProductList
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -15,8 +15,8 @@ class HomeViewModel @Inject constructor(
     private val productRep: ProductRepository
 ): ViewModel(){
 
-    private val _products = mutableStateOf(emptyList<Product>())
-    val products: MutableState<List<Product>> = _products
+    private val _products = mutableStateOf(emptyList<ProductList>())
+    val products: MutableState<List<ProductList>> = _products
 
     private val _isLoading = mutableStateOf(false)
     val isLoading: MutableState<Boolean> = _isLoading

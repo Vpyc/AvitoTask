@@ -1,12 +1,12 @@
 package com.example.avitotask.repository
 
-import com.example.avitotask.retrofit.Product
+import com.example.avitotask.retrofit.ProductList
 import com.example.avitotask.retrofit.RetrofitClient
 import com.google.gson.Gson
 
 class ProductRepository (private val gson: Gson){
 
-    suspend fun getProducts(): Result<List<Product>> {
+    suspend fun getProducts(): Result<List<ProductList>> {
         return try {
             val response = RetrofitClient.productsApi.getProducts()
             if (response.isSuccessful) {

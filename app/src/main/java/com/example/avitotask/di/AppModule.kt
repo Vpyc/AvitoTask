@@ -24,8 +24,8 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideProductRepository(gson: Gson): ProductRepository {
-        return ProductRepository(gson)
+    fun provideProductRepository(): ProductRepository {
+        return ProductRepository()
     }
 
     @Provides

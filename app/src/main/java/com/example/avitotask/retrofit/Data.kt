@@ -26,12 +26,31 @@ data class ProductList(
     val _id: String,
     val name: String,
     val price: Int,
-    val discounted_price: Int?,
+    val discounted_price: Int,
     val images: List<String>,
 )
 
-data class ProductResponse(
+data class ProductsResponse(
     val status: String,
     val count: Int,
     val Data: List<ProductList>
+)
+
+data class Product(
+    val name: String,
+    val price: Int,
+    val discounted_price: Int,
+    val images: List<String>,
+    val description: String,
+    val product_specifications: List<Specification>,
+)
+
+data class Specification(
+    val key: String,
+    val value: String
+)
+
+data class ProductByIdResponse(
+    val status: String,
+    val data: Product
 )

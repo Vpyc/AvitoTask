@@ -1,14 +1,16 @@
 package com.example.avitotask.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.avitotask.viewModels.NavigationViewModel
 import com.example.avitotask.views.AuthView
 import com.example.avitotask.views.HomeView
+import com.example.avitotask.views.ProductDetailView
 import com.example.avitotask.views.RegistrationView
 
 @Composable
@@ -42,6 +44,18 @@ fun Main() {
                     navController.navigate(NavRoutes.ProductDetail.createRoute(productId))
                 }
             )
+        }
+        composable(
+            route = NavRoutes.ProductDetail.route,
+            arguments = listOf(navArgument("productId") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val productId = backStackEntry.arguments?.getString("productId")
+            if (productId != null) {
+                ProductDetailView(productId = productId
+                ) {
+                    navController.popBackStack()
+                }
+            }
         }
     }
 }

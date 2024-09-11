@@ -40,7 +40,9 @@ import com.example.avitotask.viewModels.HomeViewModel
 fun HomeView(onProductClick: (String) -> Unit) {
     val homeViewModel: HomeViewModel = hiltViewModel()
     LaunchedEffect(Unit) {
-        homeViewModel.getProducts()
+        if (homeViewModel.products.value.isEmpty()) {
+            homeViewModel.getProducts()
+        }
     }
     if (homeViewModel.isLoading.value) {
         IsLoading()

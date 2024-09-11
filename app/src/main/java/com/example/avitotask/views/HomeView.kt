@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
@@ -33,32 +34,33 @@ import com.example.avitotask.viewModels.HomeViewModel
 @Composable
 fun HomeView(onProductClick: (String) -> Unit) {
     val homeViewModel: HomeViewModel = hiltViewModel()
-    val products = homeViewModel.products.value
-    val isLoading = homeViewModel.isLoading.value
     val gridState = rememberLazyGridState()
 
     LaunchedEffect(gridState) {
         snapshotFlow { gridState.layoutInfo.visibleItemsInfo.lastOrNull()?.index }
             .collect { lastVisibleItemIndex ->
-                if (lastVisibleItemIndex != null) {
-                    println({ "$lastVisibleItemIndex ${products.lastIndex}" })
-                }
-                if (lastVisibleItemIndex == products.lastIndex && !isLoading) {
+                if (lastVisibleItemIndex == homeViewModel.products.value.lastIndex && !homeViewModel.isLoading.value) {
                     homeViewModel.getProductsByPage()
                 }
             }
     }
 
     LaunchedEffect(Unit) {
-        if (products.isEmpty()) {
+        if (homeViewModel.products.value.isEmpty()) {
             homeViewModel.getProductsByPage()
         }
     }
-    if (isLoading) {
+
+    if (homeViewModel.isLoading.value && homeViewModel.products.value.isEmpty()) {
         IsLoading()
     } else {
         Column {
-            ProductListScreen(products, onProductClick, gridState, isLoading)
+            ProductListScreen(
+                homeViewModel.products.value,
+                onProductClick,
+                gridState,
+                homeViewModel.isLoading.value
+            )
         }
     }
 }
@@ -121,8 +123,12 @@ fun ProductListScreen(
         items(products.size) { index ->
             ProductCard(product = products[index], context = LocalContext.current, onProductClick)
         }
-    }
-    if (isLoading) {
-        IsLoading()
+        if (isLoading) {
+            item(
+                span = { GridItemSpan(maxLineSpan) }
+            )
+            { IsLoading() }
+        }
     }
 }
+

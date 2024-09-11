@@ -3,8 +3,12 @@ package com.example.avitotask.shared.impl
 import android.content.Context
 import android.content.SharedPreferences
 import com.example.avitotask.shared.TokenManager
+import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
 
-class TokenManagerImpl(context: Context) : TokenManager {
+class TokenManagerImpl @Inject constructor(
+    @ApplicationContext context: Context
+) : TokenManager {
     private val sharedPreferences: SharedPreferences =
         context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
 

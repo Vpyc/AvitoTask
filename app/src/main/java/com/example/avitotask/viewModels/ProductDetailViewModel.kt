@@ -17,7 +17,7 @@ class ProductDetailViewModel @Inject constructor(
     private val _product = mutableStateOf<Product?>(null)
     val product: MutableState<Product?> = _product
 
-    fun getProductById(productId: String){
+    fun getProductById(productId: String) {
         viewModelScope.launch {
             _isLoading.value = true
             try {

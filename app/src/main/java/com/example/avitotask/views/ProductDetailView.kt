@@ -38,7 +38,7 @@ import com.example.avitotask.viewModels.ProductDetailViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProductDetailView(productId: String, onBackClick: () -> Unit) {
-    val productDetailVM : ProductDetailViewModel = hiltViewModel()
+    val productDetailVM: ProductDetailViewModel = hiltViewModel()
     LaunchedEffect(Unit) {
         productDetailVM.getProductById(productId)
     }

@@ -36,6 +36,7 @@ class RegistrationViewModel @Inject constructor(
         _confirmPassword.value = value
         _confirmPasswordError.value = _password.value != value
     }
+
     fun register(onSuccess: () -> Unit, onError: (String) -> Unit) {
         viewModelScope.launch {
             val request = RegistrationRequest(

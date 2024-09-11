@@ -3,6 +3,7 @@ package com.example.avitotask.retrofit
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface ProductsApi {
     @GET("products")
@@ -12,4 +13,12 @@ interface ProductsApi {
     suspend fun getProductById(
         @Path("id") productId: String
     ): Response<ProductByIdResponse>
+
+    @GET("products")
+    suspend fun getProductsByPage(
+        @Query("limit") limit: Int,
+        @Query("page") page: Int,
+        @Query("fields") fields: String
+    ): Response<ProductsResponse>
+
 }

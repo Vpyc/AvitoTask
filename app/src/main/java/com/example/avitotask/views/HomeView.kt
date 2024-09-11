@@ -10,13 +10,15 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import com.example.avitotask.ui.theme.Typography
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,22 +27,38 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.avitotask.retrofit.ProductList
+import com.example.avitotask.ui.theme.Typography
 import com.example.avitotask.viewModels.HomeViewModel
 
 @Composable
 fun HomeView(onProductClick: (String) -> Unit) {
     val homeViewModel: HomeViewModel = hiltViewModel()
+    val products = homeViewModel.products.value
+    val isLoading = homeViewModel.isLoading.value
+    val gridState = rememberLazyGridState()
+
+    LaunchedEffect(gridState) {
+        snapshotFlow { gridState.layoutInfo.visibleItemsInfo.lastOrNull()?.index }
+            .collect { lastVisibleItemIndex ->
+                if (lastVisibleItemIndex != null) {
+                    println({ "$lastVisibleItemIndex ${products.lastIndex}" })
+                }
+                if (lastVisibleItemIndex == products.lastIndex && !isLoading) {
+                    homeViewModel.getProductsByPage()
+                }
+            }
+    }
+
     LaunchedEffect(Unit) {
-        if (homeViewModel.products.value.isEmpty()) {
-            homeViewModel.getProducts()
+        if (products.isEmpty()) {
+            homeViewModel.getProductsByPage()
         }
     }
-    if (homeViewModel.isLoading.value) {
+    if (isLoading) {
         IsLoading()
-    }
-    else{
-        Column{
-            ProductListScreen(homeViewModel.products.value, onProductClick)
+    } else {
+        Column {
+            ProductListScreen(products, onProductClick, gridState, isLoading)
         }
     }
 }
@@ -51,7 +69,7 @@ fun ProductCard(product: ProductList, context: Context, onProductClick: (String)
         modifier = Modifier
             .fillMaxWidth()
             .padding(4.dp)
-            .clickable { onProductClick(product._id)},
+            .clickable { onProductClick(product._id) },
         colors = CardDefaults.cardColors(containerColor = Color.Transparent),
     ) {
         Column(
@@ -62,7 +80,8 @@ fun ProductCard(product: ProductList, context: Context, onProductClick: (String)
             ProductImage(
                 product.images,
                 modifier = Modifier.align(Alignment.CenterHorizontally),
-                context = context)
+                context = context
+            )
 
             Spacer(modifier = Modifier.height(8.dp))
 
@@ -87,8 +106,14 @@ fun ProductCard(product: ProductList, context: Context, onProductClick: (String)
 }
 
 @Composable
-fun ProductListScreen(products:List<ProductList>, onProductClick: (String) -> Unit) {
+fun ProductListScreen(
+    products: List<ProductList>,
+    onProductClick: (String) -> Unit,
+    gridState: LazyGridState,
+    isLoading: Boolean
+) {
     LazyVerticalGrid(
+        state = gridState,
         columns = GridCells.Fixed(2),
         modifier = Modifier.fillMaxSize(),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -96,5 +121,8 @@ fun ProductListScreen(products:List<ProductList>, onProductClick: (String) -> Un
         items(products.size) { index ->
             ProductCard(product = products[index], context = LocalContext.current, onProductClick)
         }
+    }
+    if (isLoading) {
+        IsLoading()
     }
 }

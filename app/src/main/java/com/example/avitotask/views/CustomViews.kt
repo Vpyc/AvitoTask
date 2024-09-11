@@ -9,25 +9,25 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.unit.dp
-import com.example.avitotask.ui.theme.InputColor
-import com.example.avitotask.ui.theme.Typography
-import androidx.compose.material3.Button
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.avitotask.R
+import com.example.avitotask.ui.theme.InputColor
+import com.example.avitotask.ui.theme.Typography
 
 @Composable
 fun CustomOutlinedTextField(
@@ -74,7 +74,8 @@ fun InButton(
     ) {
         Text(
             text,
-            style = Typography.labelMedium)
+            style = Typography.labelMedium
+        )
     }
 }
 
@@ -84,7 +85,7 @@ fun ProductImage(
     index: Int = 0,
     modifier: Modifier = Modifier,
     context: Context
-){
+) {
     AsyncImage(
         model = ImageRequest.Builder(context)
             .data(images[index])
@@ -104,8 +105,7 @@ fun ProductImage(
 fun PriceField(
     discountedPrice: Int,
     price: Int,
-)
-{
+) {
     Column {
         if (discountedPrice != null && discountedPrice < price) {
             Text(

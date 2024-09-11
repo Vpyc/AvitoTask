@@ -17,17 +17,17 @@ import com.example.avitotask.views.RegistrationView
 fun Main() {
     val navController = rememberNavController()
     val navViewModel: NavigationViewModel = hiltViewModel()
-/*    LaunchedEffect(navViewModel.getToken()) {
-        if (navViewModel.getToken() != null) {
-            navController.navigate(NavRoutes.Auth.route) {
-                popUpTo(0)
+    /*    LaunchedEffect(navViewModel.getToken()) {
+            if (navViewModel.getToken() != null) {
+                navController.navigate(NavRoutes.Auth.route) {
+                    popUpTo(0)
+                }
+            } else {
+                navController.navigate(NavRoutes.Register.route) {
+                    popUpTo(0)
+                }
             }
-        } else {
-            navController.navigate(NavRoutes.Register.route) {
-                popUpTo(0)
-            }
-        }
-    }*/
+        }*/
     NavHost(
         navController = navController,
         startDestination = NavRoutes.Home.route
@@ -51,7 +51,8 @@ fun Main() {
         ) { backStackEntry ->
             val productId = backStackEntry.arguments?.getString("productId")
             if (productId != null) {
-                ProductDetailView(productId = productId
+                ProductDetailView(
+                    productId = productId
                 ) {
                     navController.popBackStack()
                 }

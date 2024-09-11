@@ -2,9 +2,8 @@ package com.example.avitotask.viewModels
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.ViewModel
 
-open class ValidationViewModel: ViewModel() {
+open class ValidationViewModel : BaseViewModel() {
     protected val _email = mutableStateOf("")
     val email: MutableState<String> = _email
 

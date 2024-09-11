@@ -12,7 +12,7 @@ fun IsLoading() {
     Box(
         modifier = Modifier
             .fillMaxSize()
-    ){
+    ) {
         CircularProgressIndicator(
             modifier = Modifier
                 .align(Alignment.Center)

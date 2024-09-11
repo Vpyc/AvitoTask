@@ -40,14 +40,14 @@ fun HomeView(onProductClick: (String) -> Unit) {
         snapshotFlow { gridState.layoutInfo.visibleItemsInfo.lastOrNull()?.index }
             .collect { lastVisibleItemIndex ->
                 if (lastVisibleItemIndex == homeViewModel.products.value.lastIndex && !homeViewModel.isLoading.value) {
-                    homeViewModel.getProductsByPage()
+                    homeViewModel.getProducts()
                 }
             }
     }
 
     LaunchedEffect(Unit) {
         if (homeViewModel.products.value.isEmpty()) {
-            homeViewModel.getProductsByPage()
+            homeViewModel.getProducts()
         }
     }
 

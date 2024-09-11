@@ -19,5 +19,28 @@ interface ProductRepository {
      * @return Товар
      */
     suspend fun getProductById(productId: String): Result<Product>
-    suspend fun getProductsByPage(limit: Int, page: Int, fields: String): Result<List<ProductList>>
+    suspend fun getProductsByPage(
+        limit: Int,
+        page: Int,
+        fields: String
+    ): Result<List<ProductList>>
+    suspend fun getProductsWithPriceSort(
+        limit: Int,
+        page: Int,
+        fields: String,
+        sort: String
+    ): Result<List<ProductList>>
+    suspend fun getProductsWithPriceSortAndCategory(
+        limit: Int,
+        page: Int,
+        fields: String,
+        sort: String,
+        category: String
+    ): Result<List<ProductList>>
+    suspend fun getProductsWithCategory(
+        limit: Int,
+        page: Int,
+        fields: String,
+        category: String
+    ): Result<List<ProductList>>
 }

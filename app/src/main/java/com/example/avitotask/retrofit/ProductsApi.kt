@@ -21,4 +21,29 @@ interface ProductsApi {
         @Query("fields") fields: String
     ): Response<ProductsResponse>
 
+    @GET("products")
+    suspend fun getProductsWithPriceSort(
+        @Query("limit") limit: Int,
+        @Query("page") page: Int,
+        @Query("fields") fields: String,
+        @Query("sort") sort: String
+    ): Response<ProductsResponse>
+
+    @GET("products")
+    suspend fun getProductsWithPriceSortAndCategory(
+        @Query("limit") limit: Int,
+        @Query("page") page: Int,
+        @Query("fields") fields: String,
+        @Query("sort") sort: String,
+        @Query("category") category: String,
+    ): Response<ProductsResponse>
+
+    @GET("products")
+    suspend fun getProductsWithCategory(
+        @Query("limit") limit: Int,
+        @Query("page") page: Int,
+        @Query("fields") fields: String,
+        @Query("category") category: String,
+    ): Response<ProductsResponse>
+
 }

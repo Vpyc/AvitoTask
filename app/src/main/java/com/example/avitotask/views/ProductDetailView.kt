@@ -106,7 +106,6 @@ fun ProductDetailView(productId: String, onBackClick: () -> Unit) {
                     Spacer(modifier = Modifier.height(16.dp))
 
                     PriceField(
-                        modifier = Modifier,
                         discountedPrice = product.discounted_price,
                         price = product.price
                     )

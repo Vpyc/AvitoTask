@@ -1,7 +1,6 @@
 package com.example.avitotask.views
 
 import android.content.Context
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -10,10 +9,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
@@ -22,17 +19,11 @@ import androidx.compose.runtime.LaunchedEffect
 import com.example.avitotask.ui.theme.Typography
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import coil.compose.AsyncImage
-import coil.request.ImageRequest
-import com.example.avitotask.R
 import com.example.avitotask.retrofit.ProductList
 import com.example.avitotask.viewModels.HomeViewModel
 
@@ -68,20 +59,10 @@ fun ProductCard(product: ProductList, context: Context, onProductClick: (String)
                 .fillMaxWidth()
                 .padding(8.dp)
         ) {
-            AsyncImage(
-                model = ImageRequest.Builder(context)
-                    .data(product.images[0])
-                    .error(R.drawable.ic_no_image)
-                    .placeholder(R.drawable.ic_serch_image)
-                    .build(),
-                contentDescription = "Product Image",
-                modifier = Modifier
-                    .size(150.dp)
-                    .clip(RoundedCornerShape(10.dp))
-                    .background(Color.White)
-                    .align(Alignment.CenterHorizontally),
-                contentScale = ContentScale.Fit
-            )
+            ProductImage(
+                product.images,
+                modifier = Modifier.align(Alignment.CenterHorizontally),
+                context = context)
 
             Spacer(modifier = Modifier.height(8.dp))
 
@@ -99,27 +80,7 @@ fun ProductCard(product: ProductList, context: Context, onProductClick: (String)
 
                 Spacer(modifier = Modifier.height(8.dp))
 
-                Column() {
-                    if (product.discounted_price != null && product.discounted_price < product.price) {
-                        Text(
-                            text = "${product.discounted_price} ₽",
-                            style = Typography.labelLarge,
-                            modifier = Modifier.padding(end = 8.dp)
-                        )
-                        Text(
-                            text = "${product.price} ₽",
-                            style = Typography.labelMedium.copy(
-                                textDecoration = TextDecoration.LineThrough
-                            )
-                        )
-                    } else {
-                        Text(
-                            text = "${product.price} ₽",
-                            style = Typography.labelLarge
-                        )
-                    }
-                }
-
+                PriceField(product.discounted_price, product.price)
             }
         }
     }

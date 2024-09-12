@@ -4,7 +4,16 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 
-open class BaseViewModel() : ViewModel() {
+/**
+ * Базовый [ViewModel], используемый для хранения состояния загрузки
+ */
+open class BaseViewModel : ViewModel() {
+    /**
+     * Состояние загрузки
+     */
     protected val _isLoading = mutableStateOf(false)
     val isLoading: MutableState<Boolean> = _isLoading
+
+    protected val _errorMessage = mutableStateOf<String?>(null)
+    val errorMessage: MutableState<String?> = _errorMessage
 }

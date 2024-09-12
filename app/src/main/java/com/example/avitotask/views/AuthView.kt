@@ -40,10 +40,9 @@ fun AuthView(navController: NavController) {
         }
     }
 
-    if (authViewModel.isLoading.value){
+    if (authViewModel.isLoading.value) {
         IsLoading()
-    }
-    else{
+    } else {
         AuthContent(authViewModel, context, navController)
     }
 }
@@ -103,7 +102,7 @@ fun AuthContent(authViewModel: AuthViewModel, context: Context, navController: N
     }
 }
 
-fun loginClick(avm : AuthViewModel, context: Context, navController: NavController) {
+fun loginClick(avm: AuthViewModel, context: Context, navController: NavController) {
     avm.login(
         onSuccess = {
             navController.navigate(NavRoutes.Home.route) {

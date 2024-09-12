@@ -41,10 +41,10 @@ val Typography = Typography(
     ),
 
     labelLarge = TextStyle(
-    fontFamily = FontFamily.Default,
-    fontWeight = FontWeight.Medium,
-    fontSize = 20.sp,
-    lineHeight = 28.sp,
-    letterSpacing = 0.sp
+        fontFamily = FontFamily.Default,
+        fontWeight = FontWeight.Medium,
+        fontSize = 20.sp,
+        lineHeight = 28.sp,
+        letterSpacing = 0.sp
     )
 )

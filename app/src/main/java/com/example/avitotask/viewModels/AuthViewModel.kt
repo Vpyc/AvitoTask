@@ -1,7 +1,5 @@
 package com.example.avitotask.viewModels
 
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
 import com.example.avitotask.repository.UserRepository
 import com.example.avitotask.retrofit.LoginRequest
@@ -16,16 +14,13 @@ class AuthViewModel @Inject constructor(
     private val tokenManager: TokenManager
 ) : ValidationViewModel() {
 
-    private val _isLoading = mutableStateOf(false)
-    val isLoading: MutableState<Boolean> = _isLoading
-
     fun validateToken(onResult: (Boolean) -> Unit) {
         viewModelScope.launch {
             _isLoading.value = true
             val token = tokenManager.getToken()
             try {
                 if (token != null) {
-                    val result = userRepository.getProfile(token)
+                    val result = userRepository.authProfile(token)
                     _isLoading.value = false
                     onResult(result.isSuccess)
                 } else {

@@ -19,16 +19,18 @@ class ProductDetailViewModel @Inject constructor(
 
     fun getProductById(productId: String) {
         viewModelScope.launch {
+            _errorMessage.value = null
             _isLoading.value = true
             try {
                 val response = productRep.getProductById(productId)
                 if (response.isSuccess) {
                     _product.value = response.getOrNull()!!
-                    _isLoading.value = false
                 } else {
-                    _isLoading.value = false
+                    response.exceptionOrNull()?.localizedMessage ?: "Ошибка при загрузке данных"
                 }
             } catch (e: Exception) {
+                _errorMessage.value = "Ошибка: ${e.localizedMessage}"
+            } finally {
                 _isLoading.value = false
             }
         }

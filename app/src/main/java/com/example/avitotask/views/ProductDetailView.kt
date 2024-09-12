@@ -64,7 +64,13 @@ fun ProductDetailView(productId: String, onBackClick: () -> Unit) {
             },
             colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent)
         )
-        if (isLoading) IsLoading() else {
+        if (isLoading) IsLoading()
+        else if (productDetailVM.errorMessage.value != null) {
+            ErrorScreen(
+                errorMessage = productDetailVM.errorMessage.value!!,
+                onRetry = { productDetailVM.getProductById(productId) }
+            )
+        } else {
             Column(
                 modifier = Modifier
                     .fillMaxSize()

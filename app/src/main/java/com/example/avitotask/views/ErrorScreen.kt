@@ -12,8 +12,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.example.avitotask.R
 import com.example.avitotask.ui.theme.Typography
 
 /**
@@ -37,7 +39,7 @@ fun ErrorScreen(errorMessage: String, onRetry: () -> Unit) {
         )
         Spacer(modifier = Modifier.height(16.dp))
         Button(onClick = { onRetry() }) {
-            Text("Повторить запрос", color = Color.White)
+            Text(stringResource(R.string.retry), color = Color.White)
         }
     }
 }

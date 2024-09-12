@@ -1,9 +1,11 @@
 package com.example.avitotask.viewModels
 
 import androidx.lifecycle.viewModelScope
+import com.example.avitotask.R
 import com.example.avitotask.repository.UserRepository
 import com.example.avitotask.retrofit.LoginRequest
 import com.example.avitotask.shared.TokenManager
+import com.example.avitotask.utils.ResourceProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -11,6 +13,7 @@ import javax.inject.Inject
 @HiltViewModel
 class AuthViewModel @Inject constructor(
     private val userRepository: UserRepository,
+    private val resourceProvider: ResourceProvider,
     private val tokenManager: TokenManager
 ) : ValidationViewModel() {
 
@@ -46,7 +49,8 @@ class AuthViewModel @Inject constructor(
                 onSuccess()
             } else {
                 _errorMessage.value =
-                    result.exceptionOrNull()?.localizedMessage ?: "Неизвестная ошибка"
+                    result.exceptionOrNull()?.localizedMessage
+                        ?: resourceProvider.getStringById(R.string.unknown_error)
                 onError(_errorMessage.value!!)
             }
         }

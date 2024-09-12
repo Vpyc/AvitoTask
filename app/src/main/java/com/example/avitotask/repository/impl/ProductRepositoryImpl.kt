@@ -1,11 +1,16 @@
 package com.example.avitotask.repository.impl
 
+import com.example.avitotask.R
 import com.example.avitotask.repository.ProductRepository
 import com.example.avitotask.retrofit.Product
 import com.example.avitotask.retrofit.ProductList
 import com.example.avitotask.retrofit.RetrofitClient
+import com.example.avitotask.utils.ResourceProvider
+import javax.inject.Inject
 
-class ProductRepositoryImpl : ProductRepository {
+class ProductRepositoryImpl @Inject constructor(
+    private val resourceProvider: ResourceProvider
+) : ProductRepository {
 
     override suspend fun getProducts(): Result<List<ProductList>> {
         return try {
@@ -14,7 +19,13 @@ class ProductRepositoryImpl : ProductRepository {
                 val apiResponse = response.body()
                 Result.success(apiResponse?.Data ?: emptyList())
             } else {
-                Result.failure(Exception("Ошибка при получении продуктов: ${response.message()}"))
+                Result.failure(
+                    Exception
+                        (
+                        resourceProvider.getStringById(R.string.failed_products_loading_error) +
+                                ": ${response.message()}"
+                    )
+                )
             }
         } catch (e: Exception) {
             Result.failure(e)
@@ -29,10 +40,20 @@ class ProductRepositoryImpl : ProductRepository {
                 if (apiResponse != null) {
                     Result.success(apiResponse.data)
                 } else {
-                    Result.failure(Exception("Пустой ответ от сервера"))
+                    Result.failure(
+                        Exception(
+                            resourceProvider.getStringById(R.string.empty_response_error)
+                        )
+                    )
                 }
             } else {
-                Result.failure(Exception("Ошибка при получении продукта: ${response.message()}"))
+                Result.failure(
+                    Exception
+                        (
+                        resourceProvider.getStringById(R.string.failed_product_loading_error) +
+                                ": ${response.message()}"
+                    )
+                )
             }
         } catch (e: Exception) {
             Result.failure(e)
@@ -50,7 +71,13 @@ class ProductRepositoryImpl : ProductRepository {
                 val apiResponse = response.body()
                 Result.success(apiResponse?.Data ?: emptyList())
             } else {
-                Result.failure(Exception("Ошибка при получении продуктов: ${response.message()}"))
+                Result.failure(
+                    Exception
+                        (
+                        resourceProvider.getStringById(R.string.failed_products_loading_error) +
+                                ": ${response.message()}"
+                    )
+                )
             }
         } catch (e: Exception) {
             Result.failure(e)
@@ -71,7 +98,13 @@ class ProductRepositoryImpl : ProductRepository {
                 val apiResponse = response.body()
                 Result.success(apiResponse?.Data ?: emptyList())
             } else {
-                Result.failure(Exception("Ошибка при получении продуктов: ${response.message()}"))
+                Result.failure(
+                    Exception
+                        (
+                        resourceProvider.getStringById(R.string.failed_products_loading_error) +
+                                ": ${response.message()}"
+                    )
+                )
             }
         } catch (e: Exception) {
             Result.failure(e)
@@ -92,7 +125,13 @@ class ProductRepositoryImpl : ProductRepository {
                 val apiResponse = response.body()
                 Result.success(apiResponse?.Data ?: emptyList())
             } else {
-                Result.failure(Exception("Ошибка при получении продуктов: ${response.message()}"))
+                Result.failure(
+                    Exception
+                        (
+                        resourceProvider.getStringById(R.string.failed_products_loading_error) +
+                                ": ${response.message()}"
+                    )
+                )
             }
         } catch (e: Exception) {
             Result.failure(e)
@@ -114,7 +153,13 @@ class ProductRepositoryImpl : ProductRepository {
                 val apiResponse = response.body()
                 Result.success(apiResponse?.Data ?: emptyList())
             } else {
-                Result.failure(Exception("Ошибка при получении продуктов: ${response.message()}"))
+                Result.failure(
+                    Exception
+                        (
+                        resourceProvider.getStringById(R.string.failed_products_loading_error) +
+                                ": ${response.message()}"
+                    )
+                )
             }
         } catch (e: Exception) {
             Result.failure(e)

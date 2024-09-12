@@ -30,9 +30,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.avitotask.R
 import com.example.avitotask.retrofit.ProductList
 import com.example.avitotask.ui.theme.Typography
 import com.example.avitotask.viewModels.HomeViewModel
@@ -108,17 +110,17 @@ fun ButtonRowWithImages(
             ButtonData(
                 "clothing",
                 "https://avatars.mds.yandex.net/i?id=f239fd141d2fa1a8ebd4e6d845d7136115ff9198f84a1213-12666658-images-thumbs&n=13",
-                "Одежда"
+                stringResource(R.string.clothes)
             ),
             ButtonData(
                 "computers",
                 "https://avatars.mds.yandex.net/i?id=37503429a658ad514f31db98ab6a0c388bc8843db190b710-5555892-images-thumbs&n=13",
-                "Компьютерная техника"
+                stringResource(R.string.computers)
             ),
             ButtonData(
                 "furniture",
                 "https://avatars.mds.yandex.net/i?id=a3293607fd39ad8863533f6ce03ad367_l-8219563-images-thumbs&n=13",
-                "Всё для дома"
+                stringResource(R.string.furniture)
             )
         )
 
@@ -160,9 +162,9 @@ fun SortRow(sortOrder: SortOrder, onSortChange: (SortOrder) -> Unit) {
         }) {
             Text(
                 text = when (currentSort) {
-                    SortOrder.NONE -> "Без сортировки"
-                    SortOrder.ASCENDING -> "Дешевле"
-                    SortOrder.DESCENDING -> "Дороже"
+                    SortOrder.NONE -> stringResource(R.string.no_sort)
+                    SortOrder.ASCENDING -> stringResource(R.string.chipper)
+                    SortOrder.DESCENDING -> stringResource(R.string.expensive)
                 },
                 style = Typography.labelLarge
             )

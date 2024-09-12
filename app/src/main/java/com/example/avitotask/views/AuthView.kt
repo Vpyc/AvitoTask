@@ -16,9 +16,11 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.avitotask.R
 import com.example.avitotask.ui.theme.Typography
 import com.example.avitotask.viewModels.AuthViewModel
 
@@ -62,7 +64,7 @@ fun AuthContent(authViewModel: AuthViewModel, context: Context, onAuth: () -> Un
                 horizontalArrangement = Arrangement.Start
             ) {
                 Text(
-                    text = "Вход",
+                    text = stringResource(R.string.auth),
                     style = Typography.titleLarge
                 )
             }
@@ -73,14 +75,14 @@ fun AuthContent(authViewModel: AuthViewModel, context: Context, onAuth: () -> Un
                 CustomOutlinedTextField(
                     value = authViewModel.email.value,
                     onValueChange = authViewModel::onEmailChange,
-                    placeholder = "Телефон и почта",
+                    placeholder = stringResource(R.string.auth_email),
                     keyboardType = KeyboardType.Email,
                     isError = authViewModel.emailError.value,
                 )
                 CustomOutlinedTextField(
                     value = authViewModel.password.value,
                     onValueChange = authViewModel::onPasswordChange,
-                    placeholder = "Пароль",
+                    placeholder = stringResource(R.string.password),
                     isPassword = true,
                     keyboardType = KeyboardType.Password,
                     isError = authViewModel.passwordError.value,
@@ -92,7 +94,7 @@ fun AuthContent(authViewModel: AuthViewModel, context: Context, onAuth: () -> Un
             onClick = { loginClick(authViewModel, context, onAuth) },
             modifier = Modifier
                 .align(Alignment.BottomCenter),
-            text = "Вход"
+            text = stringResource(R.string.auth)
         )
     }
 }

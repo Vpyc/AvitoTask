@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -122,7 +123,7 @@ fun ProductImage(
             .error(R.drawable.ic_no_image)
             .placeholder(R.drawable.ic_serch_image)
             .build(),
-        contentDescription = "Изображение продукта",
+        contentDescription = stringResource(R.string.product_image),
         modifier = modifier
             .size(150.dp)
             .clip(RoundedCornerShape(10.dp))

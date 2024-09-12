@@ -27,6 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -45,7 +46,7 @@ fun ProductDetailView(productId: String, onBackClick: () -> Unit) {
 
     val product = productDetailVM.product.value
     val pagerState = rememberPagerState(pageCount = { product?.images?.size ?: 0 })
-    val context = LocalContext.current;
+    val context = LocalContext.current
     val scrollState = rememberScrollState()
     val isLoading = productDetailVM.isLoading.value
 
@@ -63,7 +64,7 @@ fun ProductDetailView(productId: String, onBackClick: () -> Unit) {
                 IconButton(onClick = onBackClick) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_back_arrow),
-                        contentDescription = "Назад"
+                        contentDescription = stringResource(R.string.back)
                     )
                 }
             },
@@ -105,7 +106,7 @@ fun ProductDetailView(productId: String, onBackClick: () -> Unit) {
                     Spacer(modifier = Modifier.height(20.dp))
 
                     Text(
-                        text = "Характеристики",
+                        text = stringResource(R.string.characteristics),
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Medium
                     )
@@ -116,12 +117,15 @@ fun ProductDetailView(productId: String, onBackClick: () -> Unit) {
                     Spacer(modifier = Modifier.height(16.dp))
 
                     Text(
-                        text = "Описание",
+                        text = stringResource(R.string.description),
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Medium
                     )
                     Text(
-                        text = product.description ?: "Нет информации о описании",
+                        text = product.description ?: stringResource(
+                            R.string.no_information_about,
+                            "описании"
+                        ),
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Normal,
                         modifier = Modifier.padding(top = 8.dp)
@@ -160,7 +164,7 @@ private fun Characteristics(product: Product) {
             }
         } else {
             Text(
-                text = "Нет информации о характеристиках",
+                text = stringResource(R.string.no_information_about, "характеристиках"),
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Normal,
                 modifier = Modifier.padding(top = 8.dp)

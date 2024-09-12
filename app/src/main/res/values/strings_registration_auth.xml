@@ -1,0 +1,14 @@
+<resources>
+    <string name="name">Имя</string>
+    <string name="email">Электронная почта</string>
+    <string name="email_error">Введите корректный email</string>
+    <string name="password">Пароль</string>
+    <string name="password_error">Пароль не должен превышать 24 символа</string>
+    <string name="cpassword">Подтвердите пароль</string>
+    <string name="сpassword_error">Пароли не совпадают</string>
+    <string name="registration">Регистрация</string>
+    <string name="auth">Вход</string>
+    <string name="auth_email">Телефон или почта</string>
+    <string name="registr_button">Войти</string>
+    <string name="validation_error">Введите корректные данные</string>
+</resources>

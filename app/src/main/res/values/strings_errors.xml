@@ -1,0 +1,11 @@
+<resources>
+    <string name="unknown_error">Неизвестная ошибка</string>
+    <string name="error">Ошибка</string>
+    <string name="loading_error">Ошибка при загрузке данных</string>
+    <string name="failed_products_loading_error">Ошибка при получении продуктов</string>
+    <string name="failed_product_loading_error">Ошибка при получении продукта</string>
+    <string name="empty_response_error">Пустой ответ от сервера</string>
+    <string name="registration_error">Пустой ответ от сервера</string>
+    <string name="login_error">Пустой ответ от сервера</string>
+    <string name="auth_error">Пустой ответ от сервера</string>
+</resources>

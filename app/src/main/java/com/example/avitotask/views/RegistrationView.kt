@@ -18,9 +18,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.avitotask.R
 import com.example.avitotask.ui.theme.Typography
 import com.example.avitotask.viewModels.RegistrationViewModel
 
@@ -50,7 +52,7 @@ fun RegistrationView(onRegister: () -> Unit) {
                 horizontalArrangement = Arrangement.Start
             ) {
                 Text(
-                    text = "Регистрация",
+                    text = stringResource(R.string.registration),
                     style = Typography.titleLarge
                 )
             }
@@ -61,42 +63,48 @@ fun RegistrationView(onRegister: () -> Unit) {
                 CustomOutlinedTextField(
                     value = registerViewModel.name.value,
                     onValueChange = registerViewModel::onNameChange,
-                    placeholder = "Имя"
+                    placeholder = stringResource(R.string.name)
                 )
                 CustomOutlinedTextField(
                     value = registerViewModel.email.value,
                     onValueChange = registerViewModel::onEmailChange,
-                    placeholder = "Электронная почта",
+                    placeholder = stringResource(R.string.email),
                     keyboardType = KeyboardType.Email,
                     isError = registerViewModel.emailError.value,
                 )
                 if (registerViewModel.emailError.value) {
-                    Text("Введите корректный email", color = MaterialTheme.colorScheme.error)
+                    Text(
+                        stringResource(R.string.email_error),
+                        color = MaterialTheme.colorScheme.error
+                    )
                 }
                 CustomOutlinedTextField(
                     value = registerViewModel.password.value,
                     onValueChange = registerViewModel::onPasswordChange,
-                    placeholder = "Пароль",
+                    placeholder = stringResource(R.string.password),
                     isPassword = true,
                     keyboardType = KeyboardType.Password,
                     isError = registerViewModel.passwordError.value,
                 )
                 if (registerViewModel.passwordError.value) {
                     Text(
-                        "Пароль не должен превышать 24 символа",
+                        stringResource(R.string.password_error),
                         color = MaterialTheme.colorScheme.error
                     )
                 }
                 CustomOutlinedTextField(
                     value = registerViewModel.confirmPassword.value,
                     onValueChange = registerViewModel::onConfirmPasswordChange,
-                    placeholder = "Подтвердите пароль",
+                    placeholder = stringResource(R.string.cpassword),
                     isPassword = true,
                     keyboardType = KeyboardType.Password,
                     isError = registerViewModel.confirmPasswordError.value,
                 )
                 if (registerViewModel.confirmPasswordError.value) {
-                    Text("Пароли не совпадают", color = MaterialTheme.colorScheme.error)
+                    Text(
+                        stringResource(R.string.сpassword_error),
+                        color = MaterialTheme.colorScheme.error
+                    )
                 }
             }
         }
@@ -104,14 +112,14 @@ fun RegistrationView(onRegister: () -> Unit) {
             onClick = { registerClick(registerViewModel, context, onRegister) },
             modifier = Modifier
                 .align(Alignment.BottomCenter),
-            text = "Войти"
+            text = stringResource(R.string.registr_button)
         )
     }
 }
 
 fun registerClick(rvm: RegistrationViewModel, context: Context, onRegister: () -> Unit) {
     if (rvm.emailError.value || rvm.passwordError.value || rvm.confirmPasswordError.value) {
-        Toast.makeText(context, "Введите корректные данные", Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, R.string.validation_error, Toast.LENGTH_SHORT).show()
         return
     } else {
         rvm.register(

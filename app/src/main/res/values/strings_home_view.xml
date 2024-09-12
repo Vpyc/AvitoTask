@@ -1,0 +1,8 @@
+<resources>
+    <string name="no_sort">Без сортировки</string>
+    <string name="chipper">Дешевле</string>
+    <string name="expensive">Дороже</string>
+    <string name="clothes">Одежда</string>
+    <string name="computers">Компьютерная техника</string>
+    <string name="furniture">Всё для дома</string>
+</resources>

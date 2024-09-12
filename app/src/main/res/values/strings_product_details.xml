@@ -1,0 +1,6 @@
+<resources>
+    <string name="back">Назад</string>
+    <string name="no_information_about">Нет информации об %1$s</string>
+    <string name="description">Описание</string>
+    <string name="characteristics">Характеристики</string>
+</resources>

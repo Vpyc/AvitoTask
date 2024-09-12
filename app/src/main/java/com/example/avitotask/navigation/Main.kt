@@ -31,7 +31,7 @@ fun Main() {
     }
     NavHost(
         navController = navController,
-        startDestination = NavRoutes.Home.route
+        startDestination = NavRoutes.Register.route
     ) {
         composable(NavRoutes.Register.route) {
             RegistrationView(

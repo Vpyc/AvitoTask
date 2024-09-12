@@ -39,6 +39,7 @@ class RegistrationViewModel @Inject constructor(
 
     fun register(onSuccess: () -> Unit, onError: (String) -> Unit) {
         viewModelScope.launch {
+            _errorMessage.value = null
             val request = RegistrationRequest(
                 name = name.value,
                 email = email.value,
@@ -50,7 +51,9 @@ class RegistrationViewModel @Inject constructor(
             if (result.isSuccess) {
                 onSuccess()
             } else {
-                onError(result.exceptionOrNull()?.message ?: "Неизвестная ошибка")
+                _errorMessage.value =
+                    result.exceptionOrNull()?.localizedMessage ?: "Неизвестная ошибка"
+                onError(_errorMessage.value!!)
             }
         }
     }

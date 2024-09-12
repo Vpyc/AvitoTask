@@ -3,6 +3,7 @@ package com.example.avitotask.views
 import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -39,6 +40,9 @@ fun CustomOutlinedTextField(
     keyboardType: KeyboardType = KeyboardType.Text,
     isError: Boolean = false,
 ) {
+    Spacer(
+        modifier = modifier.height(10.dp)
+    )
     OutlinedTextField(
         value = value,
         onValueChange = onValueChange,
@@ -57,6 +61,9 @@ fun CustomOutlinedTextField(
             unfocusedIndicatorColor = Color.Transparent,
         ),
         isError = isError
+    )
+    Spacer(
+        modifier = modifier.height(10.dp)
     )
 }
 

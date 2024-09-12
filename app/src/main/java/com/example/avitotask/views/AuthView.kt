@@ -19,13 +19,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
-import com.example.avitotask.navigation.NavRoutes
 import com.example.avitotask.ui.theme.Typography
 import com.example.avitotask.viewModels.AuthViewModel
 
 @Composable
-fun AuthView(navController: NavController) {
+fun AuthView(onAuth: () -> Unit) {
 
     val authViewModel: AuthViewModel = hiltViewModel()
     val context = LocalContext.current
@@ -33,9 +31,7 @@ fun AuthView(navController: NavController) {
     LaunchedEffect(Unit) {
         authViewModel.validateToken { success ->
             if (success) {
-                navController.navigate(NavRoutes.Home.route) {
-                    popUpTo(NavRoutes.Auth.route) { inclusive = true }
-                }
+                onAuth()
             }
         }
     }
@@ -43,12 +39,12 @@ fun AuthView(navController: NavController) {
     if (authViewModel.isLoading.value) {
         IsLoading()
     } else {
-        AuthContent(authViewModel, context, navController)
+        AuthContent(authViewModel, context, onAuth)
     }
 }
 
 @Composable
-fun AuthContent(authViewModel: AuthViewModel, context: Context, navController: NavController) {
+fun AuthContent(authViewModel: AuthViewModel, context: Context, onAuth: () -> Unit) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -73,7 +69,6 @@ fun AuthContent(authViewModel: AuthViewModel, context: Context, navController: N
 
             Column(
                 modifier = Modifier.fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(15.dp)
             ) {
                 CustomOutlinedTextField(
                     value = authViewModel.email.value,
@@ -94,7 +89,7 @@ fun AuthContent(authViewModel: AuthViewModel, context: Context, navController: N
         }
 
         InButton(
-            onClick = { loginClick(authViewModel, context, navController) },
+            onClick = { loginClick(authViewModel, context, onAuth) },
             modifier = Modifier
                 .align(Alignment.BottomCenter),
             text = "Вход"
@@ -102,13 +97,9 @@ fun AuthContent(authViewModel: AuthViewModel, context: Context, navController: N
     }
 }
 
-fun loginClick(avm: AuthViewModel, context: Context, navController: NavController) {
+fun loginClick(avm: AuthViewModel, context: Context, onAuth: () -> Unit) {
     avm.login(
-        onSuccess = {
-            navController.navigate(NavRoutes.Home.route) {
-                popUpTo(NavRoutes.Auth.route) { inclusive = true }
-            }
-        },
+        onSuccess = onAuth,
         onError = { message ->
             Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
         }

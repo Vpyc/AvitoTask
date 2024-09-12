@@ -21,21 +21,21 @@ class AuthViewModel @Inject constructor(
             try {
                 if (token != null) {
                     val result = userRepository.authProfile(token)
-                    _isLoading.value = false
                     onResult(result.isSuccess)
                 } else {
-                    _isLoading.value = false
                     onResult(false)
                 }
             } catch (e: Exception) {
-                _isLoading.value = false
                 onResult(false)
+            } finally {
+                _isLoading.value = false
             }
         }
     }
 
     fun login(onSuccess: () -> Unit, onError: (String) -> Unit) {
         viewModelScope.launch {
+            _errorMessage.value = null
             val request = LoginRequest(
                 email = email.value,
                 password = password.value,
@@ -45,7 +45,9 @@ class AuthViewModel @Inject constructor(
                 tokenManager.saveToken((result.getOrNull()))
                 onSuccess()
             } else {
-                onError(result.exceptionOrNull()?.message ?: "Неизвестная ошибка")
+                _errorMessage.value =
+                    result.exceptionOrNull()?.localizedMessage ?: "Неизвестная ошибка"
+                onError(_errorMessage.value!!)
             }
         }
     }

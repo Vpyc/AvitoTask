@@ -26,7 +26,8 @@ class ProductDetailViewModel @Inject constructor(
                 if (response.isSuccess) {
                     _product.value = response.getOrNull()!!
                 } else {
-                    response.exceptionOrNull()?.localizedMessage ?: "Ошибка при загрузке данных"
+                    _errorMessage.value =
+                        response.exceptionOrNull()?.localizedMessage ?: "Ошибка при загрузке данных"
                 }
             } catch (e: Exception) {
                 _errorMessage.value = "Ошибка: ${e.localizedMessage}"

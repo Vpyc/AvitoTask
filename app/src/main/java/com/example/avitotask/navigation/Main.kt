@@ -1,6 +1,7 @@
 package com.example.avitotask.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -17,26 +18,33 @@ import com.example.avitotask.views.RegistrationView
 fun Main() {
     val navController = rememberNavController()
     val navViewModel: NavigationViewModel = hiltViewModel()
-    /*    LaunchedEffect(navViewModel.getToken()) {
-            if (navViewModel.getToken() != null) {
-                navController.navigate(NavRoutes.Auth.route) {
-                    popUpTo(0)
-                }
-            } else {
-                navController.navigate(NavRoutes.Register.route) {
-                    popUpTo(0)
-                }
+    LaunchedEffect(navViewModel.getToken()) {
+        if (navViewModel.getToken() != null) {
+            navController.navigate(NavRoutes.Auth.route) {
+                popUpTo(0)
             }
-        }*/
+        } else {
+            navController.navigate(NavRoutes.Register.route) {
+                popUpTo(0)
+            }
+        }
+    }
     NavHost(
         navController = navController,
         startDestination = NavRoutes.Home.route
     ) {
         composable(NavRoutes.Register.route) {
-            RegistrationView(navController)
+            RegistrationView(
+                onRegister = { navController.navigate(NavRoutes.Auth.route) }
+            )
         }
         composable(NavRoutes.Auth.route) {
-            AuthView(navController)
+            AuthView(
+                onAuth = {
+                    navController.navigate(NavRoutes.Home.route) {
+                        popUpTo(NavRoutes.Auth.route) { inclusive = true }
+                    }
+                })
         }
         composable(NavRoutes.Home.route) {
             HomeView(

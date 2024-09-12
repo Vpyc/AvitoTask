@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -19,16 +21,15 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
-import com.example.avitotask.navigation.NavRoutes
 import com.example.avitotask.ui.theme.Typography
 import com.example.avitotask.viewModels.RegistrationViewModel
 
 @Composable
-fun RegistrationView(navController: NavController) {
+fun RegistrationView(onRegister: () -> Unit) {
 
     val registerViewModel: RegistrationViewModel = hiltViewModel()
     val context = LocalContext.current
+    val scrollState = rememberScrollState()
 
     Box(
         modifier = Modifier
@@ -37,8 +38,10 @@ fun RegistrationView(navController: NavController) {
             .imePadding()
     ) {
         Column(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Top
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(scrollState),
+            verticalArrangement = Arrangement.Top,
         ) {
             Row(
                 modifier = Modifier
@@ -54,7 +57,6 @@ fun RegistrationView(navController: NavController) {
 
             Column(
                 modifier = Modifier.fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(25.dp)
             ) {
                 CustomOutlinedTextField(
                     value = registerViewModel.name.value,
@@ -68,6 +70,9 @@ fun RegistrationView(navController: NavController) {
                     keyboardType = KeyboardType.Email,
                     isError = registerViewModel.emailError.value,
                 )
+                if (registerViewModel.emailError.value) {
+                    Text("Введите корректный email", color = MaterialTheme.colorScheme.error)
+                }
                 CustomOutlinedTextField(
                     value = registerViewModel.password.value,
                     onValueChange = registerViewModel::onPasswordChange,
@@ -76,6 +81,12 @@ fun RegistrationView(navController: NavController) {
                     keyboardType = KeyboardType.Password,
                     isError = registerViewModel.passwordError.value,
                 )
+                if (registerViewModel.passwordError.value) {
+                    Text(
+                        "Пароль не должен превышать 24 символа",
+                        color = MaterialTheme.colorScheme.error
+                    )
+                }
                 CustomOutlinedTextField(
                     value = registerViewModel.confirmPassword.value,
                     onValueChange = registerViewModel::onConfirmPasswordChange,
@@ -90,7 +101,7 @@ fun RegistrationView(navController: NavController) {
             }
         }
         InButton(
-            onClick = { registerClick(registerViewModel, context, navController) },
+            onClick = { registerClick(registerViewModel, context, onRegister) },
             modifier = Modifier
                 .align(Alignment.BottomCenter),
             text = "Войти"
@@ -98,15 +109,13 @@ fun RegistrationView(navController: NavController) {
     }
 }
 
-fun registerClick(rvm: RegistrationViewModel, context: Context, navContoller: NavController) {
+fun registerClick(rvm: RegistrationViewModel, context: Context, onRegister: () -> Unit) {
     if (rvm.emailError.value || rvm.passwordError.value || rvm.confirmPasswordError.value) {
         Toast.makeText(context, "Введите корректные данные", Toast.LENGTH_SHORT).show()
         return
     } else {
         rvm.register(
-            onSuccess = {
-                navContoller.navigate(NavRoutes.Auth.route)
-            },
+            onSuccess = onRegister,
             onError = { message ->
                 Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
             }

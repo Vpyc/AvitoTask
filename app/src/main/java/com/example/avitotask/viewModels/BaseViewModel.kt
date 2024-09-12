@@ -14,6 +14,9 @@ open class BaseViewModel : ViewModel() {
     protected val _isLoading = mutableStateOf(false)
     val isLoading: MutableState<Boolean> = _isLoading
 
+    /**
+     * Сообщение об ошибке
+     */
     protected val _errorMessage = mutableStateOf<String?>(null)
     val errorMessage: MutableState<String?> = _errorMessage
 }

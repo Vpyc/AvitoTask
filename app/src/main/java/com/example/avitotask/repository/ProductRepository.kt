@@ -19,12 +19,28 @@ interface ProductRepository {
      * @return Товар
      */
     suspend fun getProductById(productId: String): Result<Product>
+
+    /**
+     * Метод для получения продуктов по странице
+     * @param limit Количество запрашиваемых продуктов
+     * @param page Номер страницы
+     * @param fields Поля продуктов, которые необходимо получить
+     * @return Список продуктов
+     */
     suspend fun getProductsByPage(
         limit: Int,
         page: Int,
         fields: String
     ): Result<List<ProductList>>
 
+    /**
+     * Метод для получения продуктов по странице с сортировкой по цене
+     * @param limit Количество запрашиваемых продуктов
+     * @param page Номер страницы
+     * @param fields Поля продуктов, которые необходимо получить
+     * @param sort Сортировка по цене
+     * @return Список продуктов
+     */
     suspend fun getProductsWithPriceSort(
         limit: Int,
         page: Int,
@@ -32,6 +48,15 @@ interface ProductRepository {
         sort: String
     ): Result<List<ProductList>>
 
+    /**
+     * Метод для получения продуктов по странице с сортировкой по цене и категории
+     * @param limit Количество запрашиваемых продуктов
+     * @param page Номер страницы
+     * @param fields Поля продуктов, которые необходимо получить
+     * @param sort Сортировка по цене
+     * @param category Категория продуктов
+     * @return Список продуктов
+     */
     suspend fun getProductsWithPriceSortAndCategory(
         limit: Int,
         page: Int,
@@ -40,6 +65,14 @@ interface ProductRepository {
         category: String
     ): Result<List<ProductList>>
 
+    /**
+     * Метод для получения продуктов по странице с сортировкой по цене и категории
+     * @param limit Количество запрашиваемых продуктов
+     * @param page Номер страницы
+     * @param fields Поля продуктов, которые необходимо получить
+     * @param category Категория продуктов
+     * @return Список продуктов
+     */
     suspend fun getProductsWithCategory(
         limit: Int,
         page: Int,

@@ -16,6 +16,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.avitotask.ui.theme.Typography
 
+/**
+ * Экран ошибки
+ * @param errorMessage сообщение об ошибке
+ * @param onRetry нажатие на кнопку "Повторить". Повторяет вложенный запрос
+ */
 @Composable
 fun ErrorScreen(errorMessage: String, onRetry: () -> Unit) {
     Column(

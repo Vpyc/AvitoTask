@@ -30,6 +30,16 @@ import com.example.avitotask.R
 import com.example.avitotask.ui.theme.InputColor
 import com.example.avitotask.ui.theme.Typography
 
+/**
+ * Компонент для ввода текста
+ * @param modifier [Modifier]
+ * @param value Значение поля
+ * @param onValueChange Обработчик изменения значения поля
+ * @param placeholder Подсказка для поля
+ * @param isPassword Флаг, указывающий, является ли поле ввода паролем
+ * @param keyboardType Тип клавиатуры для ввода
+ * @param isError Флаг, указывающий на ошибку при валидации
+ */
 @Composable
 fun CustomOutlinedTextField(
     modifier: Modifier = Modifier,
@@ -67,6 +77,12 @@ fun CustomOutlinedTextField(
     )
 }
 
+/**
+ * Компонент для кнопки Вход/Войти
+ * @param modifier [Modifier]
+ * @param text Текст кнопки
+ * @param onClick Обработчик нажатия на кнопку
+ */
 @Composable
 fun InButton(
     modifier: Modifier = Modifier,
@@ -86,6 +102,13 @@ fun InButton(
     }
 }
 
+/**
+ * Компонент для изображения продукта
+ * @param modifier [Modifier]
+ * @param images Список с url картинок
+ * @param index Индекс изображения
+ * @param context Контекст приложения
+ */
 @Composable
 fun ProductImage(
     images: List<String>,
@@ -108,6 +131,13 @@ fun ProductImage(
     )
 }
 
+/**
+ * Компонент для изображения категории
+ * @param image Url изображения
+ * @param modifier [Modifier]
+ * @param name Название категории
+ * @param context Контекст приложения
+ */
 @Composable
 fun CategoryImage(
     image: String,
@@ -130,6 +160,11 @@ fun CategoryImage(
     )
 }
 
+/**
+ * Компонент для поля цены
+ * @param discountedPrice Цена со скидкой
+ * @param price Цена без скидки
+ */
 @Composable
 fun PriceField(
     discountedPrice: Int,

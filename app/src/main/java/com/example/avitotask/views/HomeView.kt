@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,8 +18,13 @@ import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,6 +36,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.avitotask.retrofit.ProductList
 import com.example.avitotask.ui.theme.Typography
 import com.example.avitotask.viewModels.HomeViewModel
+import com.example.avitotask.viewModels.SortOrder
 
 @Composable
 fun HomeView(onProductClick: (String) -> Unit) {
@@ -51,15 +58,113 @@ fun HomeView(onProductClick: (String) -> Unit) {
         }
     }
 
-    if (homeViewModel.isLoading.value && homeViewModel.products.value.isEmpty()) {
-        IsLoading()
-    } else {
-        Column {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
+
+        ButtonRowWithImages({ category ->
+            homeViewModel.setCategory(category)
+        }, context = LocalContext.current)
+
+        SortRow(sortOrder = homeViewModel.sortOrder.value) { sortOrder ->
+            homeViewModel.setSortOrder(sortOrder)
+        }
+
+        if (homeViewModel.isLoading.value && homeViewModel.products.value.isEmpty()) {
+            IsLoading()
+        } else if (homeViewModel.errorMessage.value != null) {
+            ErrorScreen(
+                errorMessage = homeViewModel.errorMessage.value!!,
+                onRetry = { homeViewModel.getProducts() }
+            )
+        } else {
             ProductListScreen(
-                homeViewModel.products.value,
-                onProductClick,
-                gridState,
-                homeViewModel.isLoading.value
+                products = homeViewModel.products.value,
+                onProductClick = onProductClick,
+                gridState = gridState,
+                isLoading = homeViewModel.isLoading.value
+            )
+        }
+    }
+}
+
+data class ButtonData(val title: String, val imageUrl: String, val name: String)
+
+@Composable
+fun ButtonRowWithImages(
+    onButtonClick: (String?) -> Unit,
+    context: Context
+) {
+    val activeButtonIndex = remember { mutableStateOf(-1) }
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp),
+        horizontalArrangement = Arrangement.SpaceEvenly
+    ) {
+        val buttons = listOf(
+            ButtonData(
+                "clothing",
+                "https://avatars.mds.yandex.net/i?id=f239fd141d2fa1a8ebd4e6d845d7136115ff9198f84a1213-12666658-images-thumbs&n=13",
+                "Одежда"
+            ),
+            ButtonData(
+                "computers",
+                "https://avatars.mds.yandex.net/i?id=37503429a658ad514f31db98ab6a0c388bc8843db190b710-5555892-images-thumbs&n=13",
+                "Компьютерная техника"
+            ),
+            ButtonData(
+                "furniture",
+                "https://avatars.mds.yandex.net/i?id=a3293607fd39ad8863533f6ce03ad367_l-8219563-images-thumbs&n=13",
+                "Всё для дома"
+            )
+        )
+
+        buttons.forEachIndexed { index, buttonData ->
+            CategoryImage(
+                image = buttonData.imageUrl,
+                name = buttonData.name,
+                context = context,
+                modifier = Modifier
+                    .clickable {
+                        activeButtonIndex.value =
+                            if (activeButtonIndex.value == index) -1 else index
+                        onButtonClick(
+                            if (activeButtonIndex.value == -1) null else buttonData.title
+                        )
+                    }
+            )
+        }
+    }
+}
+
+@Composable
+fun SortRow(sortOrder: SortOrder, onSortChange: (SortOrder) -> Unit) {
+    var currentSort by remember { mutableStateOf(sortOrder) }
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp),
+        horizontalArrangement = Arrangement.End
+    ) {
+        TextButton(onClick = {
+            currentSort = when (currentSort) {
+                SortOrder.NONE -> SortOrder.ASCENDING
+                SortOrder.ASCENDING -> SortOrder.DESCENDING
+                SortOrder.DESCENDING -> SortOrder.NONE
+            }
+            onSortChange(currentSort)
+        }) {
+            Text(
+                text = when (currentSort) {
+                    SortOrder.NONE -> "Без сортировки"
+                    SortOrder.ASCENDING -> "Дешевле"
+                    SortOrder.DESCENDING -> "Дороже"
+                },
+                style = Typography.labelLarge
             )
         }
     }

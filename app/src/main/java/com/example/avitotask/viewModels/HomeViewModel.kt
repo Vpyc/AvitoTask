@@ -10,23 +10,23 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+enum class SortOrder {
+    NONE,       // Отсутствие сортировки
+    ASCENDING,  // Сортировка по возрастанию
+    DESCENDING  // Сортировка по убыванию
+}
+
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val productRep: ProductRepository
 ) : BaseViewModel() {
-
-    enum class SortOrder {
-        NONE,       // Отсутствие сортировки
-        ASCENDING,  // Сортировка по возрастанию
-        DESCENDING  // Сортировка по убыванию
-    }
 
     private val _products = mutableStateOf(emptyList<ProductList>())
     val products: MutableState<List<ProductList>> = _products
 
     private val category = mutableStateOf<String?>(null)
 
-    private val sortOrder = mutableStateOf(SortOrder.NONE)
+    val sortOrder = mutableStateOf(SortOrder.NONE)
 
     private val limit = 20
     private val currentPage = mutableIntStateOf(1)
@@ -49,6 +49,7 @@ class HomeViewModel @Inject constructor(
     fun getProducts() {
         viewModelScope.launch {
             _isLoading.value = true
+            _errorMessage.value = null
             try {
                 val sortQuery = getSortQuery(sortOrder.value)
                 val response = when {
@@ -61,6 +62,7 @@ class HomeViewModel @Inject constructor(
                             category = category.value!!
                         )
                     }
+
                     category.value != null -> {
                         productRep.getProductsWithCategory(
                             limit = limit,
@@ -69,6 +71,7 @@ class HomeViewModel @Inject constructor(
                             category = category.value!!
                         )
                     }
+
                     sortQuery != "" -> {
                         productRep.getProductsWithPriceSort(
                             limit = limit,
@@ -77,6 +80,7 @@ class HomeViewModel @Inject constructor(
                             sort = sortQuery
                         )
                     }
+
                     else -> {
                         productRep.getProductsByPage(
                             limit = limit,
@@ -88,12 +92,14 @@ class HomeViewModel @Inject constructor(
 
                 if (response.isSuccess) {
                     _products.value += response.getOrNull()!!
-                    _isLoading.value = false
                     currentPage.intValue++
                 } else {
-                    _isLoading.value = false
+                    _errorMessage.value =
+                        response.exceptionOrNull()?.localizedMessage ?: "Ошибка при загрузке данных"
                 }
             } catch (e: Exception) {
+                _errorMessage.value = "Ошибка: ${e.localizedMessage}"
+            } finally {
                 _isLoading.value = false
             }
         }

@@ -65,7 +65,8 @@ class ProductRepositoryImpl : ProductRepository {
     ): Result<List<ProductList>> {
         return try {
             val response = RetrofitClient.productsApi.getProductsWithCategory(
-                limit, page, fields, category)
+                limit, page, fields, category
+            )
             if (response.isSuccessful) {
                 val apiResponse = response.body()
                 Result.success(apiResponse?.Data ?: emptyList())
@@ -85,7 +86,8 @@ class ProductRepositoryImpl : ProductRepository {
     ): Result<List<ProductList>> {
         return try {
             val response = RetrofitClient.productsApi.getProductsWithPriceSort(
-                limit, page, fields, sort)
+                limit, page, fields, sort
+            )
             if (response.isSuccessful) {
                 val apiResponse = response.body()
                 Result.success(apiResponse?.Data ?: emptyList())
@@ -106,7 +108,8 @@ class ProductRepositoryImpl : ProductRepository {
     ): Result<List<ProductList>> {
         return try {
             val response = RetrofitClient.productsApi.getProductsWithPriceSortAndCategory(
-                limit, page, fields, sort, category)
+                limit, page, fields, sort, category
+            )
             if (response.isSuccessful) {
                 val apiResponse = response.body()
                 Result.success(apiResponse?.Data ?: emptyList())

@@ -92,9 +92,31 @@ fun ProductImage(
             .error(R.drawable.ic_no_image)
             .placeholder(R.drawable.ic_serch_image)
             .build(),
-        contentDescription = "Product Image",
+        contentDescription = "Изображение продукта",
         modifier = modifier
             .size(150.dp)
+            .clip(RoundedCornerShape(10.dp))
+            .background(Color.White),
+        contentScale = ContentScale.Fit
+    )
+}
+
+@Composable
+fun CategoryImage(
+    image: String,
+    name: String,
+    modifier: Modifier = Modifier,
+    context: Context
+) {
+    AsyncImage(
+        model = ImageRequest.Builder(context)
+            .data(image)
+            .error(R.drawable.ic_no_image)
+            .placeholder(R.drawable.ic_serch_image)
+            .build(),
+        contentDescription = name,
+        modifier = modifier
+            .size(90.dp)
             .clip(RoundedCornerShape(10.dp))
             .background(Color.White),
         contentScale = ContentScale.Fit

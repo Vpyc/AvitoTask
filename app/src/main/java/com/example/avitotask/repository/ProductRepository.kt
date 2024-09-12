@@ -24,12 +24,14 @@ interface ProductRepository {
         page: Int,
         fields: String
     ): Result<List<ProductList>>
+
     suspend fun getProductsWithPriceSort(
         limit: Int,
         page: Int,
         fields: String,
         sort: String
     ): Result<List<ProductList>>
+
     suspend fun getProductsWithPriceSortAndCategory(
         limit: Int,
         page: Int,
@@ -37,6 +39,7 @@ interface ProductRepository {
         sort: String,
         category: String
     ): Result<List<ProductList>>
+
     suspend fun getProductsWithCategory(
         limit: Int,
         page: Int,

@@ -26,7 +26,7 @@ interface ProductsApi {
         @Query("limit") limit: Int,
         @Query("page") page: Int,
         @Query("fields") fields: String,
-        @Query("sort") sort: String
+        @Query("sort", encoded = true) sort: String
     ): Response<ProductsResponse>
 
     @GET("products")
@@ -34,7 +34,7 @@ interface ProductsApi {
         @Query("limit") limit: Int,
         @Query("page") page: Int,
         @Query("fields") fields: String,
-        @Query("sort") sort: String,
+        @Query("sort", encoded = true) sort: String,
         @Query("category") category: String,
     ): Response<ProductsResponse>
 

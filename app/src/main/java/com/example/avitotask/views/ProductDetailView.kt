@@ -86,7 +86,9 @@ fun ProductDetailView(productId: String, onBackClick: () -> Unit) {
             ) {
                 if (product != null) {
 
-                    ImageSlider(pagerState, product, context)
+                    if (product.images.isNotEmpty()) {
+                        ImageSlider(pagerState, product, context)
+                    }
 
                     Spacer(modifier = Modifier.height(16.dp))
 

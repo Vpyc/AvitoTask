@@ -117,9 +117,10 @@ fun ProductImage(
     modifier: Modifier = Modifier,
     context: Context
 ) {
+    val imageUrl = images.getOrNull(index) // если нет изображения - передаём null
     AsyncImage(
         model = ImageRequest.Builder(context)
-            .data(images[index])
+            .data(imageUrl ?: R.drawable.ic_no_image)
             .error(R.drawable.ic_no_image)
             .placeholder(R.drawable.ic_serch_image)
             .build(),
